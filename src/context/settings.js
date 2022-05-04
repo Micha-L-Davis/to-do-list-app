@@ -15,10 +15,7 @@ export const reducer = (state = initialState, action) => {
     case 'TOGGLE_HIDE':
       return { ...state, hideCompleted: !state.hideCompleted };
     case 'DISPLAY_NUM':
-      if (+payload > 1)
-        return { ...state, numToDisplay: payload }
-      else
-        return state;
+      return { ...state, numToDisplay: payload }
     case 'SORT':
       return { ...state, defaultSortField: payload }
     default:
@@ -27,10 +24,10 @@ export const reducer = (state = initialState, action) => {
 }
 
 function SettingsProvider({ children }) {
-  let [state, dispatch] = useReducer(reducer, initialState);
+  let [settings, settingsDispatch] = useReducer(reducer, initialState);
 
   return (
-    <SettingsContext.Provider value={{ state, dispatch }}>
+    <SettingsContext.Provider value={{ settings, settingsDispatch }}>
       {children}
     </SettingsContext.Provider>
   )
