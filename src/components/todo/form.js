@@ -1,7 +1,9 @@
+import './form.scss';
+
 const Form = (props) => {
 
   return (
-    <form onSubmit={props.handleSubmit}>
+    <form onSubmit={props.handleSubmit} data-testid='form'>
 
       <h2>Add To Do Item</h2>
 

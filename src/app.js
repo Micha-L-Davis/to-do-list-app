@@ -4,19 +4,21 @@ import Header from './components/header/header';
 import Form from './components/todo/form';
 import Options from './components/options/options';
 import List from './components/todo/list';
+import './app.scss';
 
 import { SettingsContext } from './context/settings';
 
 import { v4 as uuid } from 'uuid'
 import { Button } from '@blueprintjs/core';
 
+const defaultValues = {
+  difficulty: 4,
+}
+
 function App() {
 
-  const settings = useContext(SettingsContext);
+  const { settings } = useContext(SettingsContext);
 
-  const defaultValues = {
-    difficulty: 4,
-  }
 
   const [page, setPage] = useState(0);
   const [list, setList] = useState([]);
@@ -24,7 +26,7 @@ function App() {
   const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
 
   function addItem(item) {
-    console.log(item);
+    //console.log(item);
     item.id = uuid();
     item.complete = false;
     setList([...list, item]);
@@ -102,12 +104,24 @@ function App() {
 
       {
         page > 0 &&
-        <Button icon='arrow-left' onClick={previousPage} data-testId='prev-button'> Prev</Button>
+        <Button
+          icon='arrow-left'
+          onClick={previousPage}
+          data-testid='prev-button'
+        >
+          &nbsp;Prev
+        </Button>
       }
       {
         list.length > settings.numToDisplay &&
         page < (list.length / settings.numToDisplay) - 1 &&
-        <Button rightIcon='arrow-right' onClick={advancePage} data-testId='next-button'>Next </Button>
+        <Button
+          rightIcon='arrow-right'
+          onClick={advancePage}
+          data-testid='next-button'
+        >
+          Next
+        </Button>
       }
       <List list={applyListSettings(list)} toggleComplete={toggleComplete} />
     </>
