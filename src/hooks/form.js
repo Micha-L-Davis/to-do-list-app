@@ -16,7 +16,7 @@ const useForm = (callback, defaultValues = {}) => {
 
   useEffect(() => {
     setValues(defaultValues);
-  }, defaultValues);
+  }, [defaultValues]);
 
   return {
     handleChange,
