@@ -5,7 +5,11 @@ import Form from './components/todo/form';
 import Options from './components/options/options';
 import List from './components/todo/list';
 import './app.scss';
+import Auth from './components/auth/Auth';
+import Login from './components/auth/Login';
 
+
+import LoginContext from './context/auth';
 import { SettingsContext } from './context/settings';
 
 import { v4 as uuid } from 'uuid'
@@ -97,33 +101,47 @@ function App() {
 
   return (
     <>
-      <Header incomplete={incomplete} />
+      <LoginContext>
+        <Login />
 
-      <Form handleChange={handleChange} handleSubmit={handleSubmit} defaultValues={defaultValues} />
-      <Options />
+        <Auth capability="read">
+          <Header incomplete={incomplete} />
+        </Auth>
 
-      {
-        page > 0 &&
-        <Button
-          icon='arrow-left'
-          onClick={previousPage}
-          data-testid='prev-button'
-        >
-          &nbsp;Prev
-        </Button>
-      }
-      {
-        list.length > settings.numToDisplay &&
-        page < (list.length / settings.numToDisplay) - 1 &&
-        <Button
-          rightIcon='arrow-right'
-          onClick={advancePage}
-          data-testid='next-button'
-        >
-          Next
-        </Button>
-      }
-      <List list={applyListSettings(list)} toggleComplete={toggleComplete} />
+        <Auth capability="create">
+          <Form handleChange={handleChange} handleSubmit={handleSubmit} defaultValues={defaultValues} />
+        </Auth>
+        <Auth capability="read">
+          <Options />
+        </Auth>
+
+        <Auth capability="read">
+          <div id='nav-buttons'>
+            {
+              page > 0 &&
+              <Button
+                icon='arrow-left'
+                onClick={previousPage}
+                data-testid='prev-button'
+              >
+                &nbsp;Prev
+              </Button>
+            }
+            {
+              list.length > settings.numToDisplay &&
+              page < (list.length / settings.numToDisplay) - 1 &&
+              <Button
+                rightIcon='arrow-right'
+                onClick={advancePage}
+                data-testid='next-button'
+              >
+                Next
+              </Button>
+            }
+          </div>
+          <List list={applyListSettings(list)} toggleComplete={toggleComplete} />
+        </Auth>
+      </LoginContext>
     </>
   );
 }
